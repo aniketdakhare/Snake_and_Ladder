@@ -8,7 +8,9 @@ NOPLAY=0
 LADDER=1
 SNAKE=2
 WIN=100
+
 new_position=$START_POSITION
+roll_count=0
 
 function winning_Condition()
 {
@@ -37,17 +39,29 @@ function movement()
 				;;
 		esac
 
-		if [ $new_position -eq $WIN ]
-		then
-			break
-		elif [ $new_position -lt $START_POSITION ]
-		then
-			new_position=$START_POSITION
-		fi
+		if [ $new_position -lt $START_POSITION ]
+                then
+                        new_position=$START_POSITION
+                fi
+
+                ((roll_count++))
+                player_Position[$roll_count]=$new_position
+
+                if [ $new_position -eq $WIN ]
+                then
+                        break
+                fi
+
 	done
 }
 
 movement
 
+for key in ${!player_Position[@]}
+do
+	echo "Player position when Dice rolled $key time is : ${player_Position[$key]}"
+done
+
+echo "The dice was played for $roll_count to win the game"
 echo "Current position of player is at $new_position place"
 echo "Congrats !!! You won the game..."
