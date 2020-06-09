@@ -52,32 +52,31 @@ function game_condition()
                 ((roll_count_"$player"++))
                 #player_Position[$roll_count_"$player"]=$new_position
 
-                if [ $new_position -eq $WIN ] || [ $roll_count_2 -gt $winning_moves ]
+                if [ $new_position -eq $WIN ] || [ $roll_count_2 -gt $wa ]
                 then
-                        if [ $((roll_count_"$player"))  -lt $winning_moves ] || [ $winning_moves -eq 0 ]
-                        then
-                                winning_moves=$((roll_count_"$player"))
-                                winner=$player
-                                echo "Player $player took $winning_moves moves to reach $WIN"
-                        fi
-                        break
+			if [ $((roll_count_"$player"))  -lt $wa ] || [ $wa -eq 0 ]
+			then
+				wa=$((roll_count_"$player"))
+				winner=$player
+				echo "Player $player took $wa moves to reach $WIN"
+			fi
+			break
                 fi
         done
 }
 
 function players()
 {
-        winning_moves=0
-        winner=1
+	wa=0
+	winner=1
+	for ((player=1; player<=$TOTAL_PLAYER; player++))
+	do
+		new_position=$START_POSITION
+		game_condition
+	done
 
-        for ((player=1; player<=$TOTAL_PLAYER; player++))
-        do
-                new_position=$START_POSITION
-                game_condition
-        done
-
-        echo -e "\nCongrats Player $winner, you won the game !!!"
-        echo -e "\nThe dice was played for $winning_moves times to win the game"
+	echo -e "\nCongrats Player $winner, you won the game !!!"
+	echo -e "\nThe dice was played for $wa times to win the game"
 }
 
 players
