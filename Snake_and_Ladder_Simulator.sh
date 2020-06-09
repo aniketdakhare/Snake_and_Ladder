@@ -10,6 +10,14 @@ SNAKE=2
 WIN=100
 new_position=$START_POSITION
 
+function winning_Condition()
+{
+	if [ $new_position -gt $WIN ]
+	then
+		 new_position=$(($new_position - $dice_Value))
+	fi
+}
+
 function movement()
 {
 	while (( $new_position <= $WIN ))
@@ -22,13 +30,17 @@ function movement()
 				;;
 			$LADDER)
 				new_position=$(($new_position+$dice_Value))
+				winning_Condition
 				;;
 			$SNAKE)
 				new_position=$(($new_position - $dice_Value))
 				;;
 		esac
 
-		if [ $new_position -lt $START_POSITION ]
+		if [ $new_position -eq $WIN ]
+		then
+			break
+		elif [ $new_position -lt $START_POSITION ]
 		then
 			new_position=$START_POSITION
 		fi
@@ -38,3 +50,4 @@ function movement()
 movement
 
 echo "Current position of player is at $new_position place"
+echo "Congrats !!! You won the game..."
