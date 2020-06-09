@@ -7,23 +7,32 @@ START_POSITION=0
 NOPLAY=0
 LADDER=1
 SNAKE=2
+WIN=100
 new_position=$START_POSITION
 
 function movement()
 {
-	dice_Value=$(($((RANDOM%6))+1))
-	move=$((RANDOM%3))
-	case $move in
-		$NOPLAY)
-			new_position+=0
-			;;
-		$LADDER)
-			new_position=$(($new_position+$dice_Value))
-			;;
-		$SNAKE)
-			new_position=$(($new_position - $dice_Value))
-			;;
-	esac
+	while (( $new_position <= $WIN ))
+	do
+		dice_Value=$(($((RANDOM%6))+1))
+		move=$((RANDOM%3))
+		case $move in
+			$NOPLAY)
+				new_position=$(($new_position+$NOPLAY))
+				;;
+			$LADDER)
+				new_position=$(($new_position+$dice_Value))
+				;;
+			$SNAKE)
+				new_position=$(($new_position - $dice_Value))
+				;;
+		esac
+
+		if [ $new_position -lt $START_POSITION ]
+		then
+			new_position=$START_POSITION
+		fi
+	done
 }
 
 movement
